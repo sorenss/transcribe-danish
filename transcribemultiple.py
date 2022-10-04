@@ -14,9 +14,10 @@ processor = Wav2Vec2Processor.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
 model = Wav2Vec2ForCTC.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
 
 filelist = []
-for x in os.listdir("./split"):
+subdirname = "sounds"
+for x in os.listdir("./"+subdirname):
     if x.endswith(".wav"):
-        filelist.append("split/"+x)
+        filelist.append(subdirname+"/"+x)
 
 filelist.sort()
 
