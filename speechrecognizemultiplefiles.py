@@ -44,4 +44,45 @@ for file in filelist:
     transcriptpart = transcribe(file)
     totaltranscript.append(transcriptpart)
 
-print(totaltranscript)
+#Time stamp creation
+#open file
+f = open('times.txt')
+times = f.readlines()
+f.close()
+#Format times to list
+timepairs = []
+for file in times:
+    timepair = file[0:-5].split("_")
+    if timepair[0] == "0000000":           #Skip the starting time
+        timepair[0] = "0"
+    else:
+        while timepair[0][0] == "0":       #Remove leading 0s
+            timepair[0] = timepair[0][1:]
+    timepairs.append(timepair)
+
+#Creat CLAN file
+
+clantrans = """@Font:	CAfont:15:0
+@UTF8
+@Begin
+@Languages:2     	dan
+@Participants:	SPE speaker,
+@Options:	CA
+@Media:	transcribeme, audio"""
+
+string = "\n"
+
+for no, line in enumerate(totaltranscript):
+    if no > 0:
+        transition = int(timepairs[no][0])-int(timepairs[no-1][1])
+        if transition < 300: #Micropause
+            string = string+"""*ps\t(.)\n"""
+        else:                #Proper pause
+            pause = transition/1000
+            string = string+"""\n*ps\t("""+str(pause)[:-2]+")\n"
+    string = string+"""*SPE:\t""" + line[0] + " " + timepairs[no][0] + "_" + timepairs[no][1] + ""
+clantrans = clantrans+string+"\n@End"
+
+#Save CLAN file
+with open('transcribeme.cha', 'w') as f:
+    f.write(clantrans)
