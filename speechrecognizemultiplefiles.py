@@ -73,16 +73,35 @@ clantrans = """@Font:	CAfont:15:0
 string = "\n"
 
 for no, line in enumerate(totaltranscript):
+    line = line[0] #I have no idea why this is necessary
     if no > 0:
-        transition = int(timepairs[no][0])-int(timepairs[no-1][1])
+        pausestart = int(timepairs[no-1][1])+1
+        pauseend = int(timepairs[no][0])-1
+        transition = pauseend-pausestart
         if transition < 300: #Micropause
             string = string+"""*ps\t(.)\n"""
         else:                #Proper pause
-            pause = transition/1000
-            string = string+"""\n*ps\t("""+str(pause)[:-2]+")\n"
-    string = string+"""*SPE:\t""" + line[0] + " " + timepairs[no][0] + "_" + timepairs[no][1] + ""
+            pause = round(transition/1000, 1)
+            string = string+"""\n*ps\t("""+str(pause)+")"+" " + str(pausestart) + "_" + str(pauseend) + "\n"
+    if len(line)>60:
+        splitplace = line[0:60].rfind(" ")
+        partialline = line[0:splitplace]
+        lineremainder = line[splitplace+1:]
+        string = string+"""*SPE:\t""" + partialline
+        while len(lineremainder)>60:
+            splitplace = lineremainder[0:60].rfind(" ")
+            partialline = lineremainder[0:splitplace]
+            lineremainder = lineremainder[splitplace+1:]
+            string = string+"""\n\t""" + partialline
+        string = string+"\n\t" + lineremainder + " " + timepairs[no][0] + "_" + timepairs[no][1] + ""
+    else:
+        string = string+"""*SPE:\t""" + line + " " + timepairs[no][0] + "_" + timepairs[no][1] + ""
+
 clantrans = clantrans+string+"\n@End"
 
 #Save CLAN file
 with open('transcribeme.cha', 'w') as f:
     f.write(clantrans)
+
+#Succes message
+print("Your file has been transcribed!")
