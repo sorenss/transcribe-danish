@@ -68,7 +68,8 @@ clantrans = """@Font:	CAfont:15:0
 @Languages:2     	dan
 @Participants:	SPE speaker,
 @Options:	CA
-@Media:	transcribeme, audio"""
+@Media:	transcribeme, audio
+%com:	Transcription file created with https://github.com/sorenss/transcribe-danish"""
 
 string = "\n"
 
