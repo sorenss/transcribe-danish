@@ -40,15 +40,12 @@ def transcribe(filename):
 
 totaltranscript = []
 
-for file in filelist:
-    transcriptpart = transcribe(file)
-    totaltranscript.append(transcriptpart)
-
 #Time stamp creation
 #open file
 f = open('times.txt')
 times = f.readlines()
 f.close()
+
 #Format times to list
 timepairs = []
 for file in times:
@@ -59,6 +56,15 @@ for file in times:
         while timepair[0][0] == "0":       #Remove leading 0s
             timepair[0] = timepair[0][1:]
     timepairs.append(timepair)
+
+totallength = int(timepairs[-1][1])
+
+#Transcribe
+for no,file in enumerate(filelist):
+    transcriptpart = transcribe(file)
+    howfinished = round(int(timepairs[no][1])/totallength*100, 2)
+    print(str(howfinished)+"% finished")
+    totaltranscript.append(transcriptpart)
 
 #Creat CLAN file
 
@@ -80,10 +86,10 @@ for no, line in enumerate(totaltranscript):
         pauseend = int(timepairs[no][0])-1
         transition = pauseend-pausestart
         if transition < 300: #Micropause
-            string = string+"""*ps\t(.)\n"""
+            string = string+"""*\t(.)\n"""
         else:                #Proper pause
             pause = round(transition/1000, 1)
-            string = string+"""\n*ps\t("""+str(pause)+")"+" " + str(pausestart) + "_" + str(pauseend) + "\n"
+            string = string+"""\n*\t("""+str(pause)+")"+" " + str(pausestart) + "_" + str(pauseend) + "\n"
     if len(line)>60:
         splitplace = line[0:60].rfind(" ")
         partialline = line[0:splitplace]
