@@ -27,7 +27,7 @@ def transcribe(filename):
 
     # tokenize
     input_values = processor(
-        ds[0]["audio"]["array"], return_tensors="pt", padding="longest"
+        ds[0]["audio"]["array"], return_tensors="pt", sampling_rate = 16000, padding="longest"
     ).input_values  # Batch size 1
 
     # retrieve logits
@@ -109,6 +109,3 @@ clantrans = clantrans+string+"\n@End"
 #Save CLAN file
 with open('transcribeme.cha', 'w') as f:
     f.write(clantrans)
-
-#Succes message
-print("Your file has been transcribed!")
