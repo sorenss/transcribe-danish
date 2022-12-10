@@ -5,21 +5,19 @@
 
 import torch
 import os
+import argparse
 from datasets import load_dataset, Audio
 from datasets import Dataset
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 
-# load model and tokenizer
-processor = Wav2Vec2Processor.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
-model = Wav2Vec2ForCTC.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
-
-filelist = []
-subdirname = "sounds"
-for x in os.listdir("./"+subdirname):
-    if x.endswith(".wav"):
-        filelist.append(subdirname+"/"+x)
-
-filelist.sort()
+#functions
+def arg_inputs():
+    arg_parser = argparse.ArgumentParser(description="A script that transcribes very roughly")
+    #Arguments
+    arg_parser.add_argument("-i","--input",type=str,help="The name of the sound file to transcribe")
+    arg_parser.add_argument("-c","--conventions",type=str,help="The transcription conventions: basic or CLAN")
+    args = arg_parser.parse_args()
+    return args
 
 def transcribe(filename):
     # load dataset and read soundfiles
@@ -38,6 +36,20 @@ def transcribe(filename):
     transcription = processor.batch_decode(predicted_ids)
     return transcription
 
+arguments = arg_inputs()
+
+# load model and tokenizer
+processor = Wav2Vec2Processor.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
+model = Wav2Vec2ForCTC.from_pretrained("chcaa/xls-r-300m-danish-nst-cv9")
+
+filelist = []
+subdirname = "sounds"
+for x in os.listdir("./"+subdirname):
+    if x.endswith(".wav"):
+        filelist.append(subdirname+"/"+x)
+
+filelist.sort()
+
 totaltranscript = []
 
 #Time stamp creation
@@ -46,7 +58,12 @@ f = open('times.txt')
 times = f.readlines()
 f.close()
 
-transcripttype = "default"
+if arguments.conventions == "basic":
+    transcripttype = "basic"
+    print("Selected transcription conventions: "+transcripttype)
+else:
+    transcripttype = "default"
+    print("Selected transcription conventions: "+transcripttype+" (CLAN)")
 
 #Format times to list
 timepairs = []
@@ -72,7 +89,7 @@ for no,file in enumerate(filelist):
     print(str(howfinished)+"% finished")
     totaltranscript.append(transcriptpart)
 
-#Creat CLAN file
+#Creat basic text file
 if transcripttype == "basic":
     basictrans = ""
     for no, line in enumerate(totaltranscript):
@@ -91,7 +108,7 @@ if transcripttype == "basic":
     #save basic text file
     with open('transcription.txt', 'w') as f:
         f.write(basictrans)
-else:
+else: #Create CLAN file
     clantrans = """@Font:	CAfont:15:0
     @UTF8
     @Begin
