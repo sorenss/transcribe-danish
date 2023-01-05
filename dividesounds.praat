@@ -1,5 +1,8 @@
 #open file
-sound1Path$ = "transcribeme.wav"
+form Get filename
+	infile Filename transcribeme.wav
+endform
+sound1Path$ = filename$
 sound1 = Read from file: sound1Path$
 
 Resample: 16000, 50

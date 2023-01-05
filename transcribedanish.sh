@@ -1,14 +1,13 @@
 #! /bin/bash
 mkdir sounds
-praat --run dividesounds.praat
+praat --run dividesounds.praat $1
 ls sounds > times.txt
-if [ -n "$1" ]; then
-    echo "$1" >> times.txt
-    echo "Basic text transcription requested"
+if [ -z "$2" ]
+then
+    python3 speechrecognizemultiplefiles.py --input $1
 else
-    echo "Default: CLAN transcript"
+    python3 speechrecognizemultiplefiles.py --input $1 --conventions $2
 fi
-python3 speechrecognizemultiplefiles.py
 rm -r sounds
 rm times.txt
 echo "Your file has been transcribed!"
