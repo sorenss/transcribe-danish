@@ -14,8 +14,8 @@ from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 def arg_inputs():
     arg_parser = argparse.ArgumentParser(description="A script that transcribes very roughly")
     #Arguments
-    arg_parser.add_argument("-i","--input",type=str,help="The name of the sound file to transcribe")
-    arg_parser.add_argument("-c","--conventions",type=str,help="The transcription conventions: basic or CLAN")
+    arg_parser.add_argument("-i","--input",type=str,required=True,help="The name of the sound file to transcribe")
+    arg_parser.add_argument("-c","--conventions",type=str,required=False,default='default',help="The transcription conventions: basic or CLAN")
     args = arg_parser.parse_args()
     return args
 
@@ -106,17 +106,18 @@ if transcripttype == "basic":
         else:
             basictrans = basictrans + line
     #save basic text file
-    with open('transcription.txt', 'w') as f:
+    filetosave = arguments.input[:-3]+"txt"
+    with open(filetosave, 'w') as f:
         f.write(basictrans)
 else: #Create CLAN file
     clantrans = """@Font:	CAfont:15:0
-    @UTF8
-    @Begin
-    @Languages:2     	dan
-    @Participants:	SPE speaker,
-    @Options:	CA
-    @Media:	transcribeme, audio
-    %com:	Transcription file created with https://github.com/sorenss/transcribe-danish"""
+@UTF8
+@Begin
+@Languages:2     	dan
+@Participants:	SPE speaker,
+@Options:	CA
+@Media:	"""+arguments.input+""", audio
+%com:	Transcription file created with https://github.com/sorenss/transcribe-danish"""
     string = "\n"
     for no, line in enumerate(totaltranscript):
         line = line[0] #I have no idea why this is necessary
@@ -144,5 +145,6 @@ else: #Create CLAN file
             string = string+"""*SPE:\t""" + line + " " + timepairs[no][0] + "_" + timepairs[no][1] + ""
     clantrans = clantrans+string+"\n@End"
     #Save CLAN file
-    with open('transcribeme.cha', 'w') as f:
+    filetosave = arguments.input[:-3]+"cha"
+    with open(filetosave, 'w') as f:
         f.write(clantrans)

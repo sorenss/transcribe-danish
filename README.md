@@ -21,9 +21,9 @@ The python packages *torch*, *datasets*, *transformers* and *librosa* are requir
 
 Download this repository (`git clone https://github.com/sorenss/transcribe-danish.git`). From a terminal in this folder, run the bash script:
 
-	bash transcribedanish.sh FILENAMEHERE
+	bash transcribedanish.sh FILENAMEHERE.wav
 
-with the name of your file as specified, and wait as it will take some time. If you want a basic text transcript, run `bash transcribedanish.sh FILENAME basic`. When finished, the transcript will be saved to a text file called *transcribeme.cha* or *transcription.txt*.
+with the name of your file as specified, and wait as it will take some time. If you want a basic text transcript, run `bash transcribedanish.sh FILENAME.wav basic`. When finished, the transcript will be saved to a CLAN file (*.cha*) or text file (*.txt*).
 
 ## Windows
 
