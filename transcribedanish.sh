@@ -22,11 +22,25 @@ else
         echo "Preparing to transcribe file:" $fileinput
         mkdir sounds
         praat --run dividesounds.praat $1
-		ls sounds > times.txt
 		if [ ! -s "times.txt" ]; then
-			echo "The Praat script failed. Currently, it does not work in WSL for unknown reasons."
-			exit 1
+			echo "The first Praat script failed. Currently, it does not work in WSL for unknown reasons. Attempting WSL-specific Praat script..."
+			praat --run wsl-dividesounds.praat
+			if [ "$1" != "soundfile.wav" ]; then
+				echo "In WSL, the file you want to transcribe must be named 'soundfile.wav'. Rename it and try again."
+				rm -r sounds
+				rm times.txt
+				exit 1
+			elif [ -z "$2" ]; then
+				ls sounds > times.txt
+				python3 speechrecognizemultiplefiles.py --input $1
+			else
+				ls sounds > times.txt
+				python3 speechrecognizemultiplefiles.py --input $1 --conventions $2
+			fi
+			rm -r sounds
+			rm times.txt
 		else
+			ls sounds > times.txt
 			if [ -z "$2" ]; then
 				python3 speechrecognizemultiplefiles.py --input $1
 			else

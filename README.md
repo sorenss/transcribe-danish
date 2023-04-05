@@ -35,9 +35,9 @@ The script can save the transcript as a CLAN (*.cha*) or basic text. You can spe
 The basic transcript will be saved to a text (*.txt*) file.
 
 ## Windows
-*Note: Currently the Praat script does not seem to work this way*
+There are probably multiple ways to run bash scripts on Windows. The potentially easiest way for this script (that I'm doing) is through WSL (Windows Subsystem for Linux). [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (in addition, I had to [run a command](https://github.com/microsoft/WSL/issues/5256#issuecomment-1122304369) to make it work on my machine). 
 
-There are probably multiple ways to run bash scripts on Windows. The potentially easiest way for this script (that I'm doing) is through WSL (Windows Subsystem for Linux). [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (in addition, I had to [run a command](https://github.com/microsoft/WSL/issues/5256#issuecomment-1122304369) to make it work on my machine), and then you can follow the steps in the [Linux guide](#Linux). Remember that Praat has to be installed *within* WSL as it cannot use the Windows installation, i.e. `sudo apt install praat`.
+In WSL, you can follow the steps in the [Linux guide](#Linux), except the filename MUST be *soundfile.wav*. Remember that Praat has to be installed *within* WSL as it cannot use the Windows installation, i.e. `sudo apt install praat`.
 
 # How it works
 

@@ -36,6 +36,7 @@ def transcribe(filename):
     transcription = processor.batch_decode(predicted_ids)
     return transcription
 
+print("Python script initiated. Transcript beginning...")
 arguments = arg_inputs()
 
 # load model and tokenizer
