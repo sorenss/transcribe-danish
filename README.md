@@ -6,11 +6,11 @@ The code runs locally on your computer and the data is not sent to the cloud or 
 
 # How to install and use
 
-The script requires [Praat](https://www.fon.hum.uva.nl/praat/), Python and Bash. I have descriptions below of how I run it on Linux and Windows.
+The script requires [Praat](https://www.fon.hum.uva.nl/praat/), Python and Bash. I have descriptions below of how I run it on Linux ~~and Windows~~.
 
 ## Linux
-
-Praat has to be installed: `sudo apt install praat`
+### Installation
+The script requires *Praat* to be installed, which can be done with: `sudo apt install praat`
 
 The python packages *torch*, *datasets*, *transformers* and *librosa* are required:
 
@@ -19,15 +19,25 @@ The python packages *torch*, *datasets*, *transformers* and *librosa* are requir
 	pip install transformers
 	pip install librosa
 
-Download this repository (`git clone https://github.com/sorenss/transcribe-danish.git`). From a terminal in this folder, run the bash script:
+Download this repository (`git clone https://github.com/sorenss/transcribe-danish.git`).
+
+### How to run
+From a terminal in the *transcribe-danish* folder, run the bash script like this:
 
 	bash transcribedanish.sh FILENAMEHERE.wav
 
-with the name of your file as specified, and wait as it will take some time. If you want a basic text transcript, run `bash transcribedanish.sh FILENAME.wav basic`. When finished, the transcript will be saved to a CLAN file (*.cha*) or text file (*.txt*).
+with the name of your file as specified, and wait as it will take some time. It will give you a percentage during the process indicating how far it is.
+
+The script can save the transcript as a CLAN (*.cha*) or basic text. You can specify this after the filename, but CLAN is standard, so you don't need to specify it. If you want a basic text transcript, you run the code like this:
+
+	bash transcribedanish.sh FILENAME.wav basic
+
+The basic transcript will be saved to a text (*.txt*) file.
 
 ## Windows
+There are probably multiple ways to run bash scripts on Windows. The potentially easiest way for this script (that I'm doing) is through WSL (Windows Subsystem for Linux). [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (in addition, I had to [run a command](https://github.com/microsoft/WSL/issues/5256#issuecomment-1122304369) to make it work on my machine). 
 
-There are probably multiple ways to run bash scripts on Windows. The potentially easiest way for this script (that I'm doing) is through WSL (Windows Subsystem for Linux). [Install WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (in addition, I had to [run a command](https://github.com/microsoft/WSL/issues/5256#issuecomment-1122304369) to make it work on my machine), and then you can follow the steps in the [Linux guide](#Linux). Remember that Praat has to be installed *within* WSL as it cannot use the Windows installation, i.e. `sudo apt install praat`.
+In WSL, you can follow the steps in the [Linux guide](#Linux), except the filename MUST be *soundfile.wav*. Remember that Praat has to be installed *within* WSL as it cannot use the Windows installation, i.e. `sudo apt install praat`.
 
 # How it works
 
