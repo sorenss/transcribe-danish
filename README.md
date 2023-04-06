@@ -6,7 +6,7 @@ The code runs locally on your computer and the data is not sent to the cloud or 
 
 # How to install and use
 
-The script requires [Praat](https://www.fon.hum.uva.nl/praat/), Python and Bash. I have descriptions below of how I run it on Linux ~~and Windows~~.
+The script requires [Praat](https://www.fon.hum.uva.nl/praat/), Python and Bash. I have descriptions below of how I run it on Linux and Windows.
 
 ## Linux
 ### Installation
