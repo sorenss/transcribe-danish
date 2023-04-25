@@ -22,6 +22,7 @@ else
         echo "Preparing to transcribe file:" $fileinput
         mkdir sounds
         praat --run dividesounds.praat $1
+        ls sounds > times.txt
 		if [ ! -s "times.txt" ]; then
 			echo "The first Praat script failed. Currently, it does not work in WSL for unknown reasons. Attempting WSL-specific Praat script..."
 			praat --run wsl-dividesounds.praat
